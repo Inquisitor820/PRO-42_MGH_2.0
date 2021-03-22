@@ -173,7 +173,7 @@ function food()
 }
 
 function obstacles()
-{ if (frameCount%20 === 0)
+{ if (frameCount%250 === 0)
   {  
      obstacle = createSprite(displayWidth+10,displayHeight-280);
      obstacle.addImage(obstacleImage);
