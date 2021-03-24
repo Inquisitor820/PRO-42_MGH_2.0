@@ -11,7 +11,7 @@ var survivaltime = 0
 
 function preload()
 {
-  monkey_running =        loadAnimation("sprite_0.png","sprite_1.png","sprite_2.png","sprite_3.png","sprite_4.png","sprite_5.png","sprite_6.png","sprite_7.png","sprite_8.png")
+  monkey_running =     loadAnimation("sprite_0.png","sprite_1.png","sprite_2.png","sprite_3.png","sprite_4.png","sprite_5.png","sprite_6.png","sprite_7.png","sprite_8.png")
   
   bananaImage = loadImage("banana.png");
   obstacleImage = loadImage("obstacle.png");
@@ -23,17 +23,17 @@ function preload()
 
 function setup() 
 { 
-  createCanvas(displayWidth,displayHeight);
+  createCanvas(600,400);
   
-  bg = createSprite(displayWidth-500,400,displayWidth,displayHeight)
+  bg = createSprite(300,200,600,400)
   bg.addImage("bg",bgImage);
-  bg.scale = displayWidth*1.29 / displayHeight*1.29
+  bg.x = bg.width/2;
   
-  monkey = createSprite(displayWidth-1700,displayHeight-350);
+  monkey = createSprite(50,360,15,15);
   monkey.addAnimation("runnning" , monkey_running);
-  monkey.scale = 1/2;
+  monkey.scale = 0.10;
    
-  ground = createSprite(300 , displayHeight-180 ,displayWidth, 10 );
+  ground = createSprite(300 , 380 , 600 , 10 );
   ground.x = ground.width/2;
   ground.visible = false;
 
@@ -50,11 +50,9 @@ function draw()
 {
   background("lightyellow")
   drawSprites();
-
 //GAMESTATE = PLAY
   if(gameState===PLAY)
   { 
-    
     //functions
     food();
     obstacles();
@@ -64,7 +62,7 @@ function draw()
     {
       foodGroup.destroyEach();
       score = score + 2;
-        
+      
     }
   if(obstacleGroup.isTouching(monkey))
     {
@@ -72,9 +70,9 @@ function draw()
       gameState = END;
     }
 //monkey control
-  if(keyDown("space") && monkey.y >= 400) 
+  if(keyDown("space") && monkey.y >= 120) 
   {
-    monkey.velocityY = -25;
+    monkey.velocityY = -15;
   }
     monkey.velocityY = monkey.velocityY + 0.9;
   
@@ -86,9 +84,9 @@ function draw()
   }
   
   bg.velocityX= -5
-  if(bg.x < 400)
+  if(bg.x < 97)
     {
-      bg.x = bg.width/1.5
+      bg.x = bg.width/2
   }
 
   
@@ -99,12 +97,9 @@ function draw()
  
   //consoles
   console.log("Frame Count = " + frameCount);
- // console.log("Frame Rate = " + frameRate());
- // console.log("Monkey Scale = " + monkey.scale);
- // console.log("GameState = " + gameState);
-  console.log("y: "+ (displayHeight-mouseY))
- // console.log("x: "+ (displayHeight-mouseX))
-
+  console.log("Frame Rate = " + frameRate());
+  console.log("Monkey Scale = " + monkey.scale);
+  console.log("GameState = " + gameState);
     
   }
   else if(gameState === END)
@@ -122,14 +117,14 @@ function draw()
          monkey.visible = false
         
          fill("red");
-         textSize(120);
-         textFont("impact");
-         text("Uh-Oh!" , (displayWidth/2)-250,displayHeight/2);
-      
-         fill("black");
          textSize(60);
          textFont("impact");
-         text("Restart using 'r'" ,(displayWidth/2)-260,(displayHeight/2)+80);
+         text("Uh-Oh!" , 225,200);
+      
+         fill("black");
+         textSize(30);
+         textFont("impact");
+         text("Restart using 'r'" , 215,240);
        
          if(keyDown("r"))
          {
@@ -138,32 +133,30 @@ function draw()
     }
   
   //scorefont
-  fill("white");
-  textFont("courier");
-  textSize(70);
-  stroke("black");
-  strokeWeight(7)
-  text("Score : " + score , displayWidth-1900  , displayHeight-1000 );
+  fill("black");
+  textFont("impact");
+  textSize(20);
+  text("Score : " + score , 450 , 35 );
   
   //lifetimefont
-  fill("white");
-  textFont("courier");
-  textSize(55);
+  fill("black");
+  textFont("impact");
+  textSize(20);
   survivaltime = Math.ceil(frameCount/frameRate());
-  text("Survival Time: " + survivaltime ,displayWidth-600 , displayHeight-1010);
+  text("Survival Time : " + survivaltime , 15 , 35);
 
 }
 
 function food()
 {
-  if (frameCount%150 == 0)
+  if (frameCount%80 == 0)
   {
-    var banana = createSprite(displayWidth+10,displayWidth-250);
-    banana.y = Math.round(random(displayHeight-250,displayHeight-550));
+    var banana = createSprite(600,240,40,10);
+    banana.y = Math.round(random(100,250));
     banana.addImage(bananaImage);
-    banana.scale = 1/5;
-    banana.velocityX = -10;  
-    banana.lifetime = 300;
+    banana.scale = 0.08;
+    banana.velocityX = -7;  
+    banana.lifetime = 200;
     
     banana.depth = monkey.depth;
     monkey.depth = monkey.depth + 1;
@@ -173,12 +166,12 @@ function food()
 }
 
 function obstacles()
-{ if (frameCount%250 === 0)
+{ if (frameCount%300 === 0)
   {  
-     obstacle = createSprite(displayWidth+10,displayHeight-280);
+     obstacle = createSprite(600 , 359 , 30 , 30);
      obstacle.addImage(obstacleImage);
-     obstacle.scale = 1/2
-     obstacle.lifetime = 400;
+     obstacle.scale = 0.1;
+     obstacle.lifetime = 220;
      obstacle.velocityX = -5;
     
     obstacleGroup.add(obstacle);
@@ -190,14 +183,20 @@ function increaseH()
   var increase = Math.round(score)
  switch (increase) 
  {
-   case 10 : monkey.scale = 1
+   case 10 : monkey.scale = 0.12
             break;
             
-   case 20 : monkey.scale = 1/2
+   case 20 : monkey.scale = 0.14
             break;  
             
-   case 30 : monkey.scale = 2
+   case 30 : monkey.scale = 0.16
             break;
+            
+   case 40 : monkey.scale = 0.18
+            break;
+            
+   case 50 : monkey.scale = 0.20
+            break;  
             default:break;
  }
 }
@@ -212,4 +211,5 @@ function reset()
   survivaltime = 0;
   frameCount = 0;
 }
+
 
